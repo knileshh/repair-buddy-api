@@ -40,7 +40,14 @@ export const ServiceForm: React.FC<ServiceFormProps> = ({ initialData, onSubmit,
   });
 
   const handleSubmit = async (data: z.infer<typeof serviceSchema>) => {
-    await onSubmit(data);
+    // Explicitly cast the data to CreateServiceData to ensure all required fields are present
+    const serviceData: CreateServiceData = {
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      duration: data.duration,
+    };
+    await onSubmit(serviceData);
     if (!initialData) {
       form.reset();
     }

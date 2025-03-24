@@ -3,8 +3,8 @@ import React from 'react';
 import { Service } from '@/services/serviceApi';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Clock, DollarSign, Trash2, Edit } from 'lucide-react';
-import { useAuth } from '@/context/AuthContext';
+import { Edit, Trash2 } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils';
 
 interface ServiceCardProps {
   service: Service;
@@ -13,50 +13,32 @@ interface ServiceCardProps {
 }
 
 export const ServiceCard: React.FC<ServiceCardProps> = ({ service, onEdit, onDelete }) => {
-  const { user } = useAuth();
-  const isAdmin = user?.isAdmin;
-
   return (
-    <Card className="h-full flex flex-col transition-all hover:shadow-md">
+    <Card className="h-full flex flex-col glass hover:shadow-lg transition-all">
       <CardHeader>
-        <CardTitle className="flex justify-between items-start">
-          <span>{service.name}</span>
-          {service.active ? (
-            <span className="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">Active</span>
-          ) : (
-            <span className="text-xs px-2 py-1 bg-red-100 text-red-800 rounded-full">Inactive</span>
-          )}
-        </CardTitle>
-        <CardDescription>{service.description}</CardDescription>
+        <CardTitle className="text-xl">{service.name}</CardTitle>
+        <CardDescription className="flex items-center justify-between">
+          <span>{service.duration} minutes</span>
+          <span className="font-semibold text-lg">{formatCurrency(service.price)}</span>
+        </CardDescription>
       </CardHeader>
-      <CardContent className="flex-1">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <DollarSign className="h-4 w-4" />
-            <span className="font-medium">${service.price.toFixed(2)}</span>
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Clock className="h-4 w-4" />
-            <span>{service.duration} minutes</span>
-          </div>
-        </div>
+      <CardContent className="flex-grow">
+        <p className="text-muted-foreground">{service.description}</p>
       </CardContent>
-      {isAdmin && (
-        <CardFooter className="flex justify-end gap-2">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={() => onEdit && onEdit(service)}
-          >
-            <Edit className="h-4 w-4 mr-1" /> Edit
-          </Button>
-          <Button 
-            variant="destructive" 
-            size="sm" 
-            onClick={() => onDelete && onDelete(service._id)}
-          >
-            <Trash2 className="h-4 w-4 mr-1" /> Delete
-          </Button>
+      {(onEdit || onDelete) && (
+        <CardFooter className="justify-end space-x-2 border-t p-4">
+          {onEdit && (
+            <Button variant="outline" size="sm" onClick={() => onEdit(service)}>
+              <Edit className="h-4 w-4 mr-1" />
+              Edit
+            </Button>
+          )}
+          {onDelete && (
+            <Button variant="destructive" size="sm" onClick={() => onDelete(service._id)}>
+              <Trash2 className="h-4 w-4 mr-1" />
+              Delete
+            </Button>
+          )}
         </CardFooter>
       )}
     </Card>
