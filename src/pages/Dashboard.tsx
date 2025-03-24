@@ -3,7 +3,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import NavBar from '@/components/NavBar';
-import Button from '@/components/ui-components/Button';
+import { Button } from '@/components/ui/button';
+import { RepairList } from '@/components/repairs/RepairList';
+import { Plus } from 'lucide-react';
 
 const Dashboard = () => {
   const { user, isAuthenticated } = useAuth();
@@ -32,31 +34,20 @@ const Dashboard = () => {
           </div>
           
           <div className="glass p-8 rounded-xl mb-8">
-            <h2 className="text-xl font-semibold mb-4">Your Repair Requests</h2>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+              <h2 className="text-xl font-semibold">Your Recent Repair Requests</h2>
+              <Button onClick={() => navigate('/repairs/new')}>
+                <Plus className="h-4 w-4 mr-2" />
+                New Request
+              </Button>
+            </div>
             
-            {/* Empty state */}
-            <div className="py-12 flex flex-col items-center justify-center text-center">
-              <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-8 w-8 text-primary" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" 
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium mb-2">No repair requests yet</h3>
-              <p className="text-muted-foreground mb-6 max-w-md">
-                Submit your first repair request to get started. Our technicians are ready to help.
-              </p>
-              <Button>Create New Request</Button>
+            <RepairList limit={3} />
+            
+            <div className="mt-6 text-center">
+              <Button variant="outline" onClick={() => navigate('/repairs')}>
+                View All Repair Requests
+              </Button>
             </div>
           </div>
           

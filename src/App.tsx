@@ -10,6 +10,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Services from "./pages/Services";
+import Repairs from "./pages/Repairs";
+import NewRepair from "./pages/NewRepair";
+import RepairDetail from "./pages/RepairDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
@@ -28,6 +31,9 @@ const AppContent = () => (
     <Route path="/register" element={<Register />} />
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/services" element={<Services />} />
+    <Route path="/repairs" element={<Repairs />} />
+    <Route path="/repairs/new" element={<NewRepair />} />
+    <Route path="/repairs/:id" element={<RepairDetail />} />
     <Route path="*" element={<NotFound />} />
   </Routes>
 );
