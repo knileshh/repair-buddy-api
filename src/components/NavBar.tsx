@@ -12,6 +12,7 @@ const NavBar = () => {
   // Navigation items
   const navItems = [
     { title: 'Home', path: '/' },
+    { title: 'Services', path: '/services' },
     ...(isAuthenticated
       ? [{ title: 'Dashboard', path: '/dashboard' }]
       : []),
